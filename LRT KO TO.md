@@ -8,7 +8,6 @@ void displayStations() {
     printf("(4) V. Mapa   (10) Katipunan\n");
     printf("(5) J. Ruiz   (11) Santolan\n");
     printf("(6) Gilmore   (12) Marikina\n\n");
-
 }
 
 int getFare(int origin, int destination) {
@@ -170,7 +169,7 @@ int getFare(int origin, int destination) {
             else if (destination == 8) fare = 25;
             else if (destination == 9) fare = 20;
             else if (destination == 10) fare = 15;
-            else if (destination == 12) fare = 20;
+            else if (destination == 12) fare = 15;
             else if (destination == 13) fare = 20;
             break;
         case 12:
@@ -184,8 +183,8 @@ int getFare(int origin, int destination) {
             else if (destination == 8) fare = 25;
             else if (destination == 9) fare = 25;
             else if (destination == 10) fare = 20;
-            else if (destination == 11) fare = 20;
-            else if (destination == 13) fare = 20;
+            else if (destination == 11) fare = 15;
+            else if (destination == 13) fare = 15;
             break;
         case 13:
             if (destination == 1) fare = 35;
@@ -199,10 +198,7 @@ int getFare(int origin, int destination) {
             else if (destination == 9) fare = 25;
             else if (destination == 10) fare = 25;
             else if (destination == 11) fare = 20;
-            else if (destination == 12) fare = 20;
-            break;
-        default:
-            printf("Invalid origin station.\n");
+            else if (destination == 12) fare = 15;
             break;
     }
 
@@ -210,19 +206,46 @@ int getFare(int origin, int destination) {
 }
 
 int main() {
-    int origin, destination;
+    int origin, destination, passengerType, ticketType;
+    float discount = 0.0;
     
     displayStations();
     
-    printf("Enter origin station number: ");
+    printf("\nSelect Passenger Type:\n");
+    printf("1 - Regular\n");
+    printf("2 - Student\n");
+    printf("3 - PWD (Person with Disability)\n");
+    printf("\nEnter your choice: ");
+    scanf("%d", &passengerType);
+    
+    if (passengerType == 2 || passengerType == 3) {
+        discount = 0.20;
+    }
+
+    printf("\nSelect Ticket Type:\n");
+    printf("1 - Single Journey Ticket\n");
+    printf("2 - Stored Value Card\n");
+    printf("\nEnter your choice: ");
+    scanf("%d", &ticketType);
+    
+    printf("\nEnter origin station number: ");
     scanf("%d", &origin);
     
     printf("Enter destination station number: ");
     scanf("%d", &destination);
     
     int fare = getFare(origin, destination);
+    
+    if (fare > 0 && discount > 0.0) {
+        fare -= fare * discount;
+    }
+
     if (fare > 0) {
-        printf("\nFare from station %d to station %d is %d pesos.\n", origin, destination, fare);
+        if (ticketType == 1) {
+            printf("\nFare for Single Journey Ticket from station %d to station %d is %d pesos.\n", origin, destination, fare);
+        } else if (ticketType == 2) {
+            printf("\nFare for Stored Value Card from station %d to station %d is %d pesos.\n", origin, destination, fare);
+        }
     } else if (fare == 0) {
         printf("Origin and destination are the same. No fare required.\n");
     } else {
